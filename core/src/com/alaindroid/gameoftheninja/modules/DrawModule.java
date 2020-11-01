@@ -1,6 +1,9 @@
 package com.alaindroid.gameoftheninja.modules;
 
-import com.alaindroid.gameoftheninja.draw.*;
+import com.alaindroid.gameoftheninja.draw.BackgroundDrawer;
+import com.alaindroid.gameoftheninja.draw.HexGridDrawer;
+import com.alaindroid.gameoftheninja.draw.SpriteDrawer;
+import com.alaindroid.gameoftheninja.draw.UnitDrawer;
 import com.alaindroid.gameoftheninja.service.animation.AnimationProcessorService;
 import dagger.Module;
 import dagger.Provides;
@@ -24,14 +27,8 @@ public class DrawModule {
 
     @Provides
     @Singleton
-    public BuildingDrawer buildingDrawer() {
-        return new BuildingDrawer();
-    }
-
-    @Provides
-    @Singleton
-    public SpriteDrawer spriteDrawer(HexGridDrawer hexDrawer, UnitDrawer unitDrawer, BuildingDrawer buildingDrawer) {
-        return new SpriteDrawer(hexDrawer, unitDrawer, buildingDrawer);
+    public SpriteDrawer spriteDrawer(HexGridDrawer hexDrawer, UnitDrawer unitDrawer) {
+        return new SpriteDrawer(hexDrawer, unitDrawer);
     }
 
     @Provides

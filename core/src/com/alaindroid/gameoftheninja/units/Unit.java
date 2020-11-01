@@ -2,14 +2,11 @@ package com.alaindroid.gameoftheninja.units;
 
 import com.alaindroid.gameoftheninja.draw.Point2D;
 import com.alaindroid.gameoftheninja.grid.Coordinate;
-import com.alaindroid.gameoftheninja.grid.TileType;
 import com.alaindroid.gameoftheninja.state.Player;
 import lombok.*;
 import lombok.experimental.Accessors;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -23,7 +20,6 @@ public class Unit {
     @EqualsAndHashCode.Include
     private final String id = UUID.randomUUID().toString();
     private final UnitType unitType;
-    private final Set<TileType> traversable = new HashSet<>();
     private Coordinate coordinate;
     private float maxHealth = 100;
     private float currHealth = 100;

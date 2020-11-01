@@ -32,7 +32,6 @@ public class DecisionService {
         }
         selected.wobble(true);
         popPossibles(selected, gameSave.grid());
-        registerSeen(player, selected, selected.coordinate(), gameSave.grid(), gameSave.units());
         decisionState = DecisionState.DECISION;
         return selected;
     }
@@ -48,26 +47,11 @@ public class DecisionService {
             unit.moving(true);
             unit.setNextDestination(nextCoords);
             decisionState = DecisionState.SELECTION;
-            for (Coordinate c: nextCoords) {
-                registerSeen(player, unit, c, grid, allUnits);
-            }
         } else {
             System.err.println("Couldn't find path");
             decisionState = DecisionState.SELECTION;
         }
         return true;
-    }
-
-    private void registerSeen(Player player, Unit unit, Coordinate coordinate, Grid grid, List<Unit> allUnits) {
-        Set<Coordinate> visible = navigationService.visible(coordinate, grid, unit.unitType().range());
-        gridGeneratorService.growGrid(grid, unit.coordinate(), Constants.HEX_SIDE_LENGTH, unit.unitType().range());
-        visible.forEach(player.seenCoordinates()::add);
-//        player.seenUnit().clear();
-        allUnits.stream()
-                .filter(u -> u.player().equals(player) && visible.contains(u))
-                .map(Player.UnitMemory::new)
-                .forEach(player.seenUnit()::add);
-
     }
 
     private void popPossibles(Unit unit, Grid grid) {

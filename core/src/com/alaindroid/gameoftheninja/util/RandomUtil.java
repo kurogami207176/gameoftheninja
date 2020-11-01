@@ -15,6 +15,10 @@ public class RandomUtil {
         return random.nextInt(bound);
     }
 
+    public static <T> T random(T[] array) {
+        return array[nextInt(array.length)];
+    }
+
     public static <T> T weightedRandom(Map<T, Integer> baseWeights) {
 
         TreeMap<Integer, T> fullWeightedMap = new TreeMap<>();

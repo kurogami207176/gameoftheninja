@@ -10,7 +10,7 @@ public class IOSLauncher extends IOSApplication.Delegate {
     @Override
     protected IOSApplication createApplication() {
         IOSApplicationConfiguration config = new IOSApplicationConfiguration();
-        return new IOSApplication(new ColoniserGame(), config);
+        return new IOSApplication(new GameOfTheNinjaGame(), config);
     }
 
     public static void main(String[] argv) {

@@ -3,7 +3,7 @@ package com.alaindroid.gameoftheninja.client;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import com.alaindroid.gameoftheninja.ColoniserGame;
+import com.alaindroid.gameoftheninja.GameOfTheNinjaGame;
 
 public class HtmlLauncher extends GwtApplication {
 
@@ -17,6 +17,6 @@ public class HtmlLauncher extends GwtApplication {
 
         @Override
         public ApplicationListener createApplicationListener () {
-                return new ColoniserGame();
+                return new GameOfTheNinjaGame();
         }
 }

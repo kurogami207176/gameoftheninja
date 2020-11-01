@@ -30,27 +30,8 @@ public class GridGeneratorService {
         }
         coordinates.stream()
                 .filter(grid::within)
-                .forEach(c -> grid.cell(c, cellGeneratorService.generate(c, grid)));
-//        gridPoint(grid, s);
+                .forEach(c -> grid.cell(c, cellGeneratorService.generate()));
         return grid;
-    }
-
-    public Grid growGrid(Grid currentGrid, Coordinate current, float s, int count) {
-        Set<Coordinate> coordinates = new HashSet<>();
-        coordinates.add(current);
-        for(int i =0 ; i < count; i++) {
-            coordinates.addAll(grow(coordinates, s));
-        }
-        coordinates.stream()
-                .filter(currentGrid::within)
-                .filter(c -> !currentGrid.cells().keySet().contains(c))
-                .forEach(c -> {
-                    HexCell hexCell = cellGeneratorService.generate(c, currentGrid);
-                    hexCell.currentPopHeight(-200);
-                    hexCell.popped(false);
-                    currentGrid.cell(c, hexCell);
-                });
-        return currentGrid;
     }
 
     private Set<Coordinate> grow(Set<Coordinate> coordinates, float s) {

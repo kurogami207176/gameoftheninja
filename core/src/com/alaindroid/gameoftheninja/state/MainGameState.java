@@ -1,6 +1,5 @@
 package com.alaindroid.gameoftheninja.state;
 
-import com.alaindroid.gameoftheninja.bldg.Settlement;
 import com.alaindroid.gameoftheninja.draw.BackgroundDrawer;
 import com.alaindroid.gameoftheninja.draw.Point2D;
 import com.alaindroid.gameoftheninja.draw.SpriteDrawer;
@@ -10,9 +9,7 @@ import com.alaindroid.gameoftheninja.inputs.GameControllerListener;
 import com.alaindroid.gameoftheninja.service.DecisionService;
 import com.alaindroid.gameoftheninja.service.GamespeedService;
 import com.alaindroid.gameoftheninja.service.NavigationService;
-import com.alaindroid.gameoftheninja.service.PlayerViewFilterService;
 import com.alaindroid.gameoftheninja.service.animation.AnimationProcessorService;
-import com.alaindroid.gameoftheninja.service.generator.BuildingGeneratorService;
 import com.alaindroid.gameoftheninja.service.generator.GridGeneratorService;
 import com.alaindroid.gameoftheninja.service.generator.UnitGenerator;
 import com.alaindroid.gameoftheninja.units.Unit;
@@ -33,12 +30,10 @@ public class MainGameState implements GameState {
     final BackgroundDrawer backgroundDrawer;
     final GridGeneratorService gridGeneratorService;
     final UnitGenerator unitGenerator;
-    final BuildingGeneratorService buildingGeneratorService;
     final NavigationService navigationService;
     final DecisionService decisionService;
     final GamespeedService gamespeedService;
     final AnimationProcessorService animationProcessorService;
-    final PlayerViewFilterService playerViewFilterService;
 
     OrthographicCamera camera;
     ShapeRenderer shapeRenderer;
@@ -64,21 +59,22 @@ public class MainGameState implements GameState {
         camera = new OrthographicCamera(width, height);
         Coordinate minRGB = new Coordinate(-50, -50, -50, Constants.HEX_SIDE_LENGTH);
         Coordinate maxRGB = new Coordinate(50, 50, 50, Constants.HEX_SIDE_LENGTH);
-        Grid grid = gridGeneratorService.initGrid(10, minRGB, maxRGB, Constants.HEX_SIDE_LENGTH);
+        Grid grid = gridGeneratorService.initGrid(8, minRGB, maxRGB, Constants.HEX_SIDE_LENGTH);
         Point2D center = grid.centerPoint();
         camera.translate(center.x(), center.y());
 
         Set<Player> players = new HashSet<>();
-        player1 = new Player(Player.Color.RED);
-        player2 = new Player(Player.Color.GREEN);
+        player1 = new Player(Player.Color.GOLD);
+        player2 = new Player(Player.Color.SILVER);
         players.add(player1);
         players.add(player2);
 
-        List<Settlement> settlements = buildingGeneratorService.generateStart(players, grid);
-        Map<Player, Set<Coordinate>> settlementRange = buildingGeneratorService.findCastleRange(players, settlements, grid);
-        List<Unit> units = unitGenerator.generateUnitsForPlayers(players, settlementRange, 3, 3, grid);
+        Map<Player, Set<Coordinate>> settlementRange = new HashMap<>();
+        settlementRange.put(player1, grid.cells().keySet());
+        settlementRange.put(player2, grid.cells().keySet());
+        List<Unit> units = unitGenerator.generateUnitsForPlayers(players, settlementRange, 3, grid);
 
-        gameSave = new GameSave(grid, units, settlements, players);
+        gameSave = new GameSave(grid, units, players);
         gameSave.currentPlayer(player1);
         backgroundDrawer.create();
         spriteDrawer.create();

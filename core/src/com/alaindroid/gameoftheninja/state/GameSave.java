@@ -1,6 +1,5 @@
 package com.alaindroid.gameoftheninja.state;
 
-import com.alaindroid.gameoftheninja.bldg.Settlement;
 import com.alaindroid.gameoftheninja.grid.Grid;
 import com.alaindroid.gameoftheninja.units.Unit;
 import lombok.Data;
@@ -14,11 +13,11 @@ import java.util.Set;
 public class GameSave {
     private final Grid grid;
     private final List<Unit> units;
-    private final List<Settlement> settlements;
 
     private final Set<Player> players;
 
     private Player currentPlayer;
+    private MainPlayStateEnum currentState = MainPlayStateEnum.PLACEMENT;
 
     public Unit findWobblingUnit() {
         return units.stream().filter(Unit::wobble).findFirst().orElse(null);

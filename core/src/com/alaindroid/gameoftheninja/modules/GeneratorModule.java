@@ -1,7 +1,6 @@
 package com.alaindroid.gameoftheninja.modules;
 
 import com.alaindroid.gameoftheninja.service.NavigationService;
-import com.alaindroid.gameoftheninja.service.generator.BuildingGeneratorService;
 import com.alaindroid.gameoftheninja.service.generator.GridGeneratorService;
 import com.alaindroid.gameoftheninja.service.generator.UnitGenerator;
 import com.alaindroid.gameoftheninja.service.grid.CellGeneratorService;
@@ -24,13 +23,6 @@ public class GeneratorModule {
     @Singleton
     public UnitGenerator unitGenerator(NavigationService navigationService) {
         return new UnitGenerator(navigationService);
-    }
-
-    @Provides
-    @Singleton
-    public BuildingGeneratorService buildingGeneratorService(NavigationService navigationService,
-                                                             GridGeneratorService gridGeneratorService) {
-        return new BuildingGeneratorService(gridGeneratorService, navigationService);
     }
 
     @Provides

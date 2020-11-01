@@ -16,17 +16,8 @@ import java.util.stream.Stream;
 public class CellGeneratorService {
     private final LandTileWeightService landTileWeightService;
 
-    public HexCell generate(Coordinate coordinate, Grid grid) {
-        Map<Coordinate, HexCell> hexCellMap = grid.cells();
-        Map<TileType, Long> neighborTiles = coordinate
-                .generateNeighbors()
-                .stream()
-                .map(hexCellMap::get)
-                .filter(Objects::nonNull)
-                .map(HexCell::tileType)
-                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
-                ;
-        return new HexCell(weightedType(coordinate, grid.minRGB(), grid.maxRGB(), neighborTiles));
+    public HexCell generate() {
+        return new HexCell(TileType.LAVA);
     }
 
     private Map<TileType, Integer> createWeighted(TreeMap<Integer, TileType> fullWeightedMap,

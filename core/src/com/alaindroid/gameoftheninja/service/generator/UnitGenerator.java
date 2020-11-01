@@ -4,17 +4,14 @@ import com.alaindroid.gameoftheninja.grid.Coordinate;
 import com.alaindroid.gameoftheninja.grid.Grid;
 import com.alaindroid.gameoftheninja.service.NavigationService;
 import com.alaindroid.gameoftheninja.state.Player;
-import com.alaindroid.gameoftheninja.units.LandUnit;
-import com.alaindroid.gameoftheninja.units.ShipUnit;
 import com.alaindroid.gameoftheninja.units.Unit;
+import com.alaindroid.gameoftheninja.units.UnitType;
 import com.alaindroid.gameoftheninja.util.CoordinateUtil;
 import lombok.RequiredArgsConstructor;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 public class UnitGenerator {
@@ -22,9 +19,9 @@ public class UnitGenerator {
     private final NavigationService navigationService;
 
     public List<Unit> generateUnitsForPlayers(Collection<Player> players, Map<Player, Set<Coordinate>> settlementRange,
-                                              int ship, int land, Grid grid) {
+                                              int cnt, Grid grid) {
         List<Unit> units = players.stream()
-                .map(player -> generate(player, ship, land))
+                .map(player -> generate(player, cnt))
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
         System.out.println("Generated units: " + units.size());
@@ -35,21 +32,20 @@ public class UnitGenerator {
                 removable.add(unit);
                 continue;
             }
-            Set<Coordinate> visible = navigationService.visible(unit.coordinate(), grid, unit.unitType().range());
-            visible.forEach(unit.player().seenCoordinates()::add);
         }
         units.removeAll(removable);
+        System.out.println("Filtered units: " + units.size());
+        units.forEach(unit -> {
+            System.out.println(unit);
+        });
         return units;
     }
 
-    public List<Unit> generate(Player player, int ship, int land) {
-        List<Unit> gens =  Stream.of(
-                IntStream.range(0, ship)
-                        .mapToObj(i -> ShipUnit.random()),
-                IntStream.range(0, land)
-                        .mapToObj(i -> LandUnit.random()))
-                .flatMap(Function.identity())
-                .collect(Collectors.toList());
+    public List<Unit> generate(Player player, int  cnt) {
+        List<Unit> gens =  IntStream.range(0, cnt)
+                        .mapToObj(i -> UnitType.random())
+                        .map(unitType -> new Unit(unitType))
+                        .collect(Collectors.toList());
         for(Unit unit: gens) {
             unit.player(player);
         }

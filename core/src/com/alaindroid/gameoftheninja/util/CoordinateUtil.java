@@ -37,7 +37,7 @@ public class CoordinateUtil {
     }
 
     public static Predicate<Coordinate> navigable(Unit unit, Grid grid) {
-        return coordinate -> grid.cell(coordinate) != null && unit.traversable().contains(grid.cell(coordinate).tileType());
+        return coordinate -> grid.cell(coordinate) != null;
     }
 
 
