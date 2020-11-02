@@ -47,11 +47,12 @@ public class DecisionService {
             unit.moving(true);
             unit.setNextDestination(nextCoords);
             decisionState = DecisionState.SELECTION;
+            return true;
         } else {
             System.err.println("Couldn't find path");
             decisionState = DecisionState.SELECTION;
+            return false;
         }
-        return true;
     }
 
     private void popPossibles(Unit unit, Grid grid) {

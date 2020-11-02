@@ -59,20 +59,20 @@ public class MainGameState implements GameState {
         camera = new OrthographicCamera(width, height);
         Coordinate minRGB = new Coordinate(-50, -50, -50, Constants.HEX_SIDE_LENGTH);
         Coordinate maxRGB = new Coordinate(50, 50, 50, Constants.HEX_SIDE_LENGTH);
-        Grid grid = gridGeneratorService.initGrid(8, minRGB, maxRGB, Constants.HEX_SIDE_LENGTH);
+        Grid grid = gridGeneratorService.initGrid(9, minRGB, maxRGB, Constants.HEX_SIDE_LENGTH);
         Point2D center = grid.centerPoint();
         camera.translate(center.x(), center.y());
 
-        Set<Player> players = new HashSet<>();
+        List<Player> players = new ArrayList<>();
         player1 = new Player(Player.Color.GOLD);
         player2 = new Player(Player.Color.SILVER);
         players.add(player1);
         players.add(player2);
 
-        Map<Player, Set<Coordinate>> settlementRange = new HashMap<>();
-        settlementRange.put(player1, grid.cells().keySet());
-        settlementRange.put(player2, grid.cells().keySet());
-        List<Unit> units = unitGenerator.generateUnitsForPlayers(players, settlementRange, 3, grid);
+        Map<Player, Set<Coordinate>> starterRange = new HashMap<>();
+        starterRange.put(player1, navigationService.starter(grid, 0));
+        starterRange.put(player2, navigationService.starter(grid, 1));
+        List<Unit> units = unitGenerator.generateUnitsForPlayers(players, starterRange, 3, grid);
 
         gameSave = new GameSave(grid, units, players);
         gameSave.currentPlayer(player1);

@@ -14,7 +14,7 @@ public class GameSave {
     private final Grid grid;
     private final List<Unit> units;
 
-    private final Set<Player> players;
+    private final List<Player> players;
 
     private Player currentPlayer;
     private MainPlayStateEnum currentState = MainPlayStateEnum.PLACEMENT;
@@ -32,5 +32,11 @@ public class GameSave {
 
     public void reset() {
         postDecisionReset();
+    }
+
+    public void nextPlayer() {
+        int indexOf = players.indexOf(currentPlayer);
+        int next = (indexOf + 1) % players.size();
+        currentPlayer = players.get(next);
     }
 }

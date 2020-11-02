@@ -4,7 +4,6 @@ import com.alaindroid.gameoftheninja.service.NavigationService;
 import com.alaindroid.gameoftheninja.service.generator.GridGeneratorService;
 import com.alaindroid.gameoftheninja.service.generator.UnitGenerator;
 import com.alaindroid.gameoftheninja.service.grid.CellGeneratorService;
-import com.alaindroid.gameoftheninja.service.grid.LandTileWeightService;
 import dagger.Module;
 import dagger.Provides;
 
@@ -27,12 +26,7 @@ public class GeneratorModule {
 
     @Provides
     @Singleton
-    public CellGeneratorService cellGeneratorService(LandTileWeightService landTileWeightService) {
-        return new CellGeneratorService(landTileWeightService);
-    }
-    @Provides
-    @Singleton
-    public LandTileWeightService tileWeightService() {
-        return new LandTileWeightService();
+    public CellGeneratorService cellGeneratorService(NavigationService navigationService) {
+        return new CellGeneratorService(navigationService);
     }
 }

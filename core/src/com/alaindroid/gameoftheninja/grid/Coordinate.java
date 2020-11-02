@@ -6,6 +6,7 @@ import com.alaindroid.gameoftheninja.util.CoordinateUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import java.util.HashSet;
@@ -19,6 +20,7 @@ public class Coordinate {
     private int r, g, b;
 
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private List<Point2D> point;
 
     public Coordinate(int r, int g, int b, float s) {
@@ -38,6 +40,10 @@ public class Coordinate {
         coordinates.add(coordOffset( 0, -1, 1, s));
         coordinates.add(coordOffset( -1, 0, 1, s));
         return coordinates;
+    }
+
+    public boolean isNeighbor(Coordinate coordinate) {
+        return generateNeighbors().contains(coordinate);
     }
 
     private Coordinate coordOffset(int r, int g, int b, float s) {

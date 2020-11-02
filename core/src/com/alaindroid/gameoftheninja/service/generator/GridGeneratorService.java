@@ -3,6 +3,7 @@ package com.alaindroid.gameoftheninja.service.generator;
 import com.alaindroid.gameoftheninja.grid.Coordinate;
 import com.alaindroid.gameoftheninja.grid.Grid;
 import com.alaindroid.gameoftheninja.grid.HexCell;
+import com.alaindroid.gameoftheninja.grid.TileType;
 import com.alaindroid.gameoftheninja.service.grid.CellGeneratorService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -30,7 +31,8 @@ public class GridGeneratorService {
         }
         coordinates.stream()
                 .filter(grid::within)
-                .forEach(c -> grid.cell(c, cellGeneratorService.generate()));
+                .forEach(c -> grid.cell(c, new HexCell(TileType.LAVA)));
+        cellGeneratorService.modifyHex(grid);
         return grid;
     }
 

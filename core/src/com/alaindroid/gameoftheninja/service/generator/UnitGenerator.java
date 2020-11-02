@@ -42,14 +42,32 @@ public class UnitGenerator {
     }
 
     public List<Unit> generate(Player player, int  cnt) {
-        List<Unit> gens =  IntStream.range(0, cnt)
-                        .mapToObj(i -> UnitType.random())
-                        .map(unitType -> new Unit(unitType))
-                        .collect(Collectors.toList());
+        List<Unit> gens =  new ArrayList<>();
+        gens.addAll(unit(1, UnitType.FLAG));
+        gens.addAll(unit(2, UnitType.SPY));
+        gens.addAll(unit(6, UnitType.PRIV));
+        gens.addAll(unit(1, UnitType.SGT));
+        gens.addAll(unit(1, UnitType.LT1ST));
+        gens.addAll(unit(1, UnitType.LT2ND));
+        gens.addAll(unit(1, UnitType.CPT));
+        gens.addAll(unit(1, UnitType.MAJ));
+        gens.addAll(unit(1, UnitType.LTCOL));
+        gens.addAll(unit(1, UnitType.COL));
+        gens.addAll(unit(1, UnitType.GEN1));
+        gens.addAll(unit(1, UnitType.GEN2));
+        gens.addAll(unit(1, UnitType.GEN3));
+        gens.addAll(unit(1, UnitType.GEN4));
+        gens.addAll(unit(1, UnitType.GEN5));
         for(Unit unit: gens) {
             unit.player(player);
         }
         return gens;
+    }
+
+    private List<Unit> unit(int count, UnitType type) {
+        return IntStream.range(0, count)
+                .mapToObj(c -> new Unit(type))
+                .collect(Collectors.toList());
     }
 
     private void randomCoordinate(Unit unit, Grid grid, Set<Coordinate> settlementRange, List<Unit> unitsSoFar) {
