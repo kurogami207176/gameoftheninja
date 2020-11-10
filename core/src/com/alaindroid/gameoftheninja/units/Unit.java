@@ -1,5 +1,7 @@
 package com.alaindroid.gameoftheninja.units;
 
+import com.alaindroid.gameoftheninja.animation.Plottable;
+import com.alaindroid.gameoftheninja.animation.Rotatable;
 import com.alaindroid.gameoftheninja.draw.Point2D;
 import com.alaindroid.gameoftheninja.grid.Coordinate;
 import com.alaindroid.gameoftheninja.state.Player;
@@ -16,7 +18,7 @@ import java.util.stream.Stream;
 @Accessors(fluent = true)
 @RequiredArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Unit {
+public class Unit implements Plottable, Rotatable {
     @EqualsAndHashCode.Include
     private final String id = UUID.randomUUID().toString();
     private final UnitType unitType;
@@ -25,7 +27,8 @@ public class Unit {
     private float currHealth = 100;
 
     @Setter
-    private float currentWobbleAngle = 0;
+    @Getter
+    private float currentAngle = 0;
     @Setter
     private boolean currentWobbleDirectionLeft = false;
     @Setter
@@ -54,6 +57,7 @@ public class Unit {
         this.coordinate = nextCoordinate[nextCoordinate.length - 1];
     }
 
+    @Override
     public Point2D currentPoint() {
         return currentPoint == null
                 ? coordinate.point().get(0)

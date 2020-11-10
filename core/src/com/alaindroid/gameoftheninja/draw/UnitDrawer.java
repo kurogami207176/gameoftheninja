@@ -44,7 +44,7 @@ public class UnitDrawer {
         sprite.setScale(scale);
         sprite.setX(p.x() - texture.getWidth() / 2);
         sprite.setY(p.y() - texture.getHeight() / 2);
-        sprite.setRotation(unit.currentWobbleAngle());
+        sprite.setRotation(unit.currentAngle());
         sprite.draw(spriteBatch);
         return new SpriteDraw(sprite, (int) p.y() - (unit.moving()? 100 : 0));
     }

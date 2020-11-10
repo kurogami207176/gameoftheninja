@@ -81,12 +81,12 @@ public class AnimationProcessorService {
 
     private void processWobble(Unit unit, float deltaTime) {
         float newWobbleAngle;
-        if (unit.wobble() && Math.abs(unit.currentWobbleAngle()) < maxWobbleAngle) {
+        if (unit.wobble() && Math.abs(unit.currentAngle()) < maxWobbleAngle) {
             if (unit.currentWobbleDirectionLeft()) {
-                newWobbleAngle = Math.max(-maxWobbleAngle, unit.currentWobbleAngle() - deltaTime*wobbleSpeed);
+                newWobbleAngle = Math.max(-maxWobbleAngle, unit.currentAngle() - deltaTime*wobbleSpeed);
             }
             else {
-                newWobbleAngle = Math.min(maxWobbleAngle, unit.currentWobbleAngle() + deltaTime*wobbleSpeed);
+                newWobbleAngle = Math.min(maxWobbleAngle, unit.currentAngle() + deltaTime*wobbleSpeed);
             }
         }
         else {
@@ -95,6 +95,6 @@ public class AnimationProcessorService {
         if (Math.abs(newWobbleAngle) == maxWobbleAngle) {
             unit.currentWobbleDirectionLeft(!unit.currentWobbleDirectionLeft());
         }
-        unit.currentWobbleAngle(newWobbleAngle);
+        unit.currentAngle(newWobbleAngle);
     }
 }
