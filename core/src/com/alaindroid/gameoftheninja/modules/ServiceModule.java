@@ -1,9 +1,6 @@
 package com.alaindroid.gameoftheninja.modules;
 
-import com.alaindroid.gameoftheninja.service.DecisionService;
-import com.alaindroid.gameoftheninja.service.GamespeedService;
-import com.alaindroid.gameoftheninja.service.NavigationService;
-import com.alaindroid.gameoftheninja.service.PathFinderService;
+import com.alaindroid.gameoftheninja.service.*;
 import com.alaindroid.gameoftheninja.service.generator.GridGeneratorService;
 import dagger.Module;
 import dagger.Provides;
@@ -17,12 +14,17 @@ public class ServiceModule {
     public NavigationService navigationService() {
         return new NavigationService();
     }
+    @Provides
+    @Singleton
+    public FightResolverService fightResolverService() {
+        return new FightResolverService();
+    }
 
     @Provides
     @Singleton
     public DecisionService decisionService(NavigationService navigationService, PathFinderService pathFinderService,
-                                           GridGeneratorService gridGeneratorService) {
-        return new DecisionService(navigationService, pathFinderService, gridGeneratorService);
+                                           GridGeneratorService gridGeneratorService, FightResolverService fightResolverService) {
+        return new DecisionService(navigationService, pathFinderService, gridGeneratorService, fightResolverService);
     }
 
     @Provides

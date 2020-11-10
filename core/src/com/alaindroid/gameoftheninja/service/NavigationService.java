@@ -8,28 +8,34 @@ import com.alaindroid.gameoftheninja.util.CoordinateUtil;
 import com.alaindroid.gameoftheninja.util.MathUtil;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class NavigationService {
-    public Set<Coordinate> navigable(Unit unit, Grid grid) {
-        return navigable(unit, grid, unit.unitType().range());
+    public Set<Coordinate> navigable(Unit unit, Grid grid, List<Unit> unitList) {
+        return navigable(unit, grid, unitList, unit.unitType().range());
     }
 
-    public Set<Coordinate> navigable(Unit unit, Grid grid, int range) {
-        return navigable(unit, unit.coordinate(), grid, range);
+    public Set<Coordinate> navigable(Unit unit, Grid grid, List<Unit> unitList, int range) {
+        return navigable(unit, unit.coordinate(), grid, unitList, range);
     }
 
-    public Set<Coordinate> navigable(Unit unit, Coordinate coordinate, Grid grid, int range) {
+    public Set<Coordinate> navigable(Unit unit, Coordinate coordinate, Grid grid, List<Unit> unitList, int range) {
         Set<Coordinate> navigable = new HashSet<>();
         navigable.add(coordinate);
+        Set<Coordinate> playerOwnedCoordinates = unitList.stream()
+                .filter(u -> u.player().equals(unit.player()))
+                .map(Unit::coordinate)
+                .collect(Collectors.toSet());
         for (int i = 0; i < range; i++) {
             navigable.addAll(navigable.stream()
                     .map(Coordinate::generateNeighbors)
                     .flatMap(Set::stream)
                     .filter(CoordinateUtil.navigable(unit, grid))
+                    .filter(c -> !playerOwnedCoordinates.contains(c))
                     .collect(Collectors.toSet())
             );
         }

@@ -16,7 +16,7 @@ public class PathFinderService {
 
     private final NavigationService navigationService;
 
-    public List<Coordinate> findPath(Unit unit, Coordinate end, Grid grid) {
+    public List<Coordinate> findPath(Unit unit, Coordinate end, Grid grid, List<Unit> unitList) {
         Coordinate current = unit.coordinate();
         List<Coordinate> pathTaken = new ArrayList<>();
         Set<Coordinate> blockSet = new HashSet<>();
@@ -24,7 +24,7 @@ public class PathFinderService {
         blockSet.add(current);
         while (!current.equals(end)) {
             Set<Coordinate> possibles = navigationService
-                    .navigable(unit, current, grid, 1)
+                    .navigable(unit, current, grid, unitList, 1)
                     .stream()
                     .filter(c -> !pathTaken.contains(c))
                     .filter(c -> !blockSet.contains(c))
