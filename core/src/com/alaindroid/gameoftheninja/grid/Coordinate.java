@@ -27,7 +27,7 @@ public class Coordinate {
         this.r = r;
         this.g = g;
         this.b = b;
-        point = CoordinateUtil.toPoint(r,g, b, s);
+        point = CoordinateUtil.toPoint(r, g, b, s);
     }
 
     public Set<Coordinate> generateNeighbors() {

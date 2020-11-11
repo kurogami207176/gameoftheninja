@@ -7,6 +7,7 @@ import com.alaindroid.gameoftheninja.state.GameSave;
 import com.alaindroid.gameoftheninja.units.Unit;
 
 import java.util.List;
+import java.util.Optional;
 
 public class AnimationProcessorService {
     private static final float popReductionSpeed = 200f;
@@ -48,7 +49,7 @@ public class AnimationProcessorService {
     }
 
     private void processAnimation(Unit unit, float deltaTime) {
-        processWobble(unit, deltaTime);
+        processRotation(unit, deltaTime);
         processUnitMove(unit, deltaTime);
     }
 
@@ -65,6 +66,8 @@ public class AnimationProcessorService {
             unit.targetPoints().remove(0);
             if (unit.targetPoints().isEmpty()) {
                 unit.moving(false);
+                unit.onArrival().ifPresent(Runnable::run);
+                unit.onArrival(Optional.empty());
             }
             return;
         }
@@ -79,22 +82,42 @@ public class AnimationProcessorService {
 
     }
 
-    private void processWobble(Unit unit, float deltaTime) {
+    private void processRotation(Unit unit, float deltaTime) {
         float newWobbleAngle;
         if (unit.wobble() && Math.abs(unit.currentAngle()) < maxWobbleAngle) {
-            if (unit.currentWobbleDirectionLeft()) {
-                newWobbleAngle = Math.max(-maxWobbleAngle, unit.currentAngle() - deltaTime*wobbleSpeed);
+            newWobbleAngle = processWobble(unit, deltaTime);
+            if (Math.abs(newWobbleAngle) == maxWobbleAngle) {
+                unit.currentRotateDirectionLeft(!unit.currentRotateDirectionLeft());
             }
-            else {
-                newWobbleAngle = Math.min(maxWobbleAngle, unit.currentAngle() + deltaTime*wobbleSpeed);
-            }
+        }
+        else if (unit.spin()) {
+            newWobbleAngle = processSpin(unit, deltaTime);
         }
         else {
             newWobbleAngle = 0;
         }
-        if (Math.abs(newWobbleAngle) == maxWobbleAngle) {
-            unit.currentWobbleDirectionLeft(!unit.currentWobbleDirectionLeft());
-        }
         unit.currentAngle(newWobbleAngle);
+    }
+
+    private float processSpin(Unit unit, float deltaTime) {
+        float newWobbleAngle;
+        if (unit.currentRotateDirectionLeft()) {
+            newWobbleAngle = unit.currentAngle() - deltaTime *wobbleSpeed;
+        }
+        else {
+            newWobbleAngle = unit.currentAngle() + deltaTime *wobbleSpeed;
+        }
+        return newWobbleAngle;
+    }
+
+    private float processWobble(Unit unit, float deltaTime) {
+        float newWobbleAngle;
+        if (unit.currentRotateDirectionLeft()) {
+            newWobbleAngle = Math.max(-maxWobbleAngle, unit.currentAngle() - deltaTime *wobbleSpeed);
+        }
+        else {
+            newWobbleAngle = Math.min(maxWobbleAngle, unit.currentAngle() + deltaTime *wobbleSpeed);
+        }
+        return newWobbleAngle;
     }
 }

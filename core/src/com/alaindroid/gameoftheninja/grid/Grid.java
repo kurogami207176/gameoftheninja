@@ -1,6 +1,7 @@
 package com.alaindroid.gameoftheninja.grid;
 
 import com.alaindroid.gameoftheninja.draw.Point2D;
+import com.alaindroid.gameoftheninja.util.Constants;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
@@ -15,6 +16,8 @@ public class Grid {
     private Map<Coordinate, HexCell> cells = new HashMap<>();
     private final Coordinate minRGB;
     private final Coordinate maxRGB;
+
+    private Coordinate hell = new Coordinate(99, 99, 99, Constants.HEX_SIDE_LENGTH);
 
     public HexCell cell(Coordinate coordinate) {
         return cells.get(coordinate);

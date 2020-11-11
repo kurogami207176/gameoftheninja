@@ -53,13 +53,18 @@ public class DecisionService {
         Optional<Unit> unitInNextCoord = allUnits.stream()
                 .filter(u -> u.coordinate().equals(nextCoordinate))
                 .findFirst();
+        unit.moving(true);
+        unit.setNextDestination(nextCoords);
         if (unitInNextCoord.isPresent()) {
-            FightResolverService.FightResolution resolution = fightResolverService.findLoser(unit, unitInNextCoord.get());
-//            if (resolution.getVictor().contains())
-        }
-        else {
-            unit.moving(true);
-            unit.setNextDestination(nextCoords);
+            unit.onArrival(Optional.of(() -> {
+                FightResolverService.FightResolution resolution = fightResolverService.findLoser(unit, unitInNextCoord.get());
+                resolution.getDefeated().forEach(defeated -> {
+                    defeated.moving();
+                    defeated.setNextDestination(grid.hell());
+                    defeated.spin();
+                });
+
+            }));
         }
         decisionState = DecisionState.SELECTION;
         return true;
